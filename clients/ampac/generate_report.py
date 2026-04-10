@@ -38,14 +38,22 @@ pdfmetrics.registerFont(TTFont("OpenSans-Bold",      os.path.join(FONT_DIR, "Ope
 pdfmetrics.registerFont(TTFont("OpenSans-ExtraBold", os.path.join(FONT_DIR, "OpenSans-ExtraBold.ttf")))
 
 # ─── LOGOS ─────────────────────────────────────────────────────
-LOGO_WHITE = r"c:\vscode\tech-branding\tech-branding\assets\Technijian Logo - white text.png"
+LOGO_WHITE_SRC = r"c:\vscode\tech-branding\tech-branding\assets\Technijian Logo - white text.png"
 LOGO_COLOR = r"c:\vscode\tech-branding\tech-branding\assets\logos\png\technijian-logo-full-color-1200x251.png"
+
+# Pre-composite white logo onto dark background for crisp rendering
+LOGO_WHITE_COMPOSITED = os.path.join(BASE, "technijian_logo_white_on_dark.png")
+_src = Image.open(LOGO_WHITE_SRC).convert("RGBA")
+_bg = Image.new("RGBA", _src.size, (26, 26, 46, 255))  # DARK = #1A1A2E
+_bg.paste(_src, (0, 0), _src)
+_bg.convert("RGB").save(LOGO_WHITE_COMPOSITED)
+del _src, _bg
 
 # ─── HELPERS ──────────────────────────────────────────────────
 
 def draw_logo(c, x, y, h=28, dark_bg=False):
     """Draw logo at position, scaled to height h. Use white version on dark backgrounds."""
-    logo_path = LOGO_WHITE if dark_bg else LOGO_COLOR
+    logo_path = LOGO_WHITE_COMPOSITED if dark_bg else LOGO_COLOR
     try:
         img = Image.open(logo_path)
         aspect = img.width / img.height
