@@ -1,0 +1,12 @@
+{
+  "name": "affg-proposal-revision-presentation",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Technijian-branded PowerPoint deck for AFFG proposal revision review",
+  "scripts": {
+    "generate": "node generate_presentation.js"
+  },
+  "dependencies": {
+    "pptxgenjs": "^3.12.0"
+  }
+}
